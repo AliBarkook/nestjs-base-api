@@ -22,28 +22,45 @@ export class UserController {
     @Get('getAll')
     @ApiOperation({ summary: 'get all user'})
     @ApiResponse({ status: 404, description: 'no users found!' })
-    @ApiResponse({ status: 200, description: 'get all user' })
-    findAll(@Res({ passthrough: true }) res: Response, @Body() body: UserDTO[]) {
-        // if (this.userService.getAllUser()) {
-        res.status(HttpStatus.OK);
-        return this.userService.getAllUser();
-        // }
-        // else
-        //     throw new HttpException('no users found!', HttpStatus.NOT_FOUND)
+    async findAll(@Res({ passthrough: true }) res: Response) {
+        
+        if (await (await this.userService.getAllUser()).length > 0) {
+            res.status(HttpStatus.OK);
+            return this.userService.getAllUser();
+        }
+        else
+            throw new HttpException('no user found!', HttpStatus.NOT_FOUND)
     }
     
-    // @Get('getById/:id')
-    // findOne(@Param('id') id: string) {
-    //     return this.userService.findOne(+id);
-    // }
+    @ApiOperation({ summary: 'get user by id'})
+    @ApiResponse({ status: 404, description: 'no users found with this id' })
+    @Get('getById/:id')
+    async findOne(@Param('id') id: string, @Res({ passthrough: true }) res: Response) {
+        
+        if (await this.userService.getUserById(id)) {
+            res.status(HttpStatus.OK);
+            return this.userService.getUserById(id)
+        }
+        else
+            throw new HttpException('no users found with this id', HttpStatus.NOT_FOUND)
+    }
     
     // @Put('edit/:id')
     // update(@Param('id') id: string, @Body() updateUserDto: UserDTO) {
     //     return this.userService.update(+id, updateUserDto);
     // }
     
-    // @Delete('delete:id')
-    // remove(@Param('id') id: string) {
-    //     return this.userService.remove(+id);
-    // }
+    @ApiOperation({ summary: 'delete user by id'})
+    @ApiResponse({ status: 404, description: 'no users found with this id' })
+    @Delete('delete/:id')
+    async remove(@Param('id') id: string, @Res({ passthrough: true }) res: Response) {
+        const result = await this.userService.removeUserById(id)
+          
+        if  (result) {
+            res.status(HttpStatus.OK).json(result);
+        }
+        else if (result === '') {
+            throw new HttpException('no user found with this id', HttpStatus.NOT_FOUND)
+        }
+    }
 }

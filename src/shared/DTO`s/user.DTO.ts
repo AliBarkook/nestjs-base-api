@@ -8,10 +8,6 @@ export class UserDTO {
 
     @ApiProperty({ description: 'string' })
     @IsString()
-    readonly password: string;
-
-    @ApiProperty({ description: 'string' })
-    @IsString()
     readonly phoneNumber: string;
 
     @ApiProperty({ description: '0' })
@@ -21,5 +17,9 @@ export class UserDTO {
     @ApiProperty({ description: 'string' })
     @IsString()
     readonly email: string;
+
+    @ApiProperty({ description: 'string' })
+    @IsString()
+    readonly id: string;
 
 }
