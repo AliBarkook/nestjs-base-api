@@ -1,9 +1,7 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LoginDTO } from 'src/shared/DTO`s/login.DTO';
+import { Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation,ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { UserService } from 'src/shared/service/user.service';
-import { UserDTO } from 'src/shared/DTO`s/user.DTO';
 
 @ApiBearerAuth()
 @ApiTags('user')
